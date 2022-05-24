@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  </head>
+<body>
+ <script>
+      window.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        const width = 800
+        const height = 600;
+
+        var renderer = new THREE.WebGLRenderer();
+        document.body.appendChild(renderer.domElement);
+        renderer.setSize(width, height);
+
+        renderer.shadowMap.enabled = true;
+
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, width / height);
+        camera.position.set(0.5, 0.5, 7);
+
+        const controls = new THREE.OrbitControls(camera, document.body); 
+        
+        var directionalLight = new THREE.DirectionalLight(0xffffff,0.3);
+        directionalLight.position.set(-10, 10, -10);
+        scene.add(directionalLight);
+
+        var light = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 20, 0.2);
+        light.position.set(0 ,10, 15);
+        light.castShadow = true;
+        scene.add(light);
+
+        /*const gridHelper = new THREE.GridHelper(2,10); // size, step
+        scene.add(gridHelper);
+        const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+        scene.add(axisHelper);*/
+
+        var geometry = new THREE.PlaneGeometry(4, 4, 10, 10);
+        var material = new THREE.MeshPhongMaterial({color: 0x00ff00});
+        var plane = new THREE.Mesh(geometry, material);
+        plane.receiveShadow = true;
+        plane.rotation.set( -Math.PI/2, 0, 0 );
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
+
+        var cylinder = new THREE.CylinderGeometry(0.3, 0.5, 2, 30);
+        var cmaterial = new THREE.MeshStandardMaterial({color: 0x797979});
+        var body = new THREE.Mesh(cylinder, cmaterial);
+        body.castShadow = true;
+        body.position.set(-0.7, 0.8, -0.5);
+        
+        var f_geometry = new THREE.CylinderGeometry(0.6, 0.6, 0.2, 30);
+        var floorMaterial = new THREE.MeshStandardMaterial({color: 0xffffff});
+        var floor = new THREE.Mesh(f_geometry, floorMaterial);
+        floor.castShadow = true;
+        floor.position.set(-0.7, 1.0, -0.5);
+
+        var f_geometry_2 = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 30);
+        var floor_2 = new THREE.Mesh(f_geometry_2, floorMaterial);
+        floor_2.castShadow = true;
+        floor_2.position.set(-0.7, 1.5, -0.5);
+
+        var roofgeometry = new THREE.CylinderGeometry(0.01, 0.5, 0.3, 30);
+        var roofmaterial = new THREE.MeshStandardMaterial({color: 0xff0000});
+        var roof = new THREE.Mesh(roofgeometry, roofmaterial);
+        roof.castShadow = true;
+        roof.position.set(-0.7, 1.9, -0.5);
+
+        var p_geometry = new THREE.BoxGeometry(0.7, 0.4, 0.4);
+        var p_material = new THREE.MeshPhongMaterial({color: 0xf5b2b2});
+        var p_body = new THREE.Mesh(p_geometry, p_material);
+        body.castShadow = true;
+        p_body.position.set(0.2, 0.3, 0.3);
+
+        var facegeometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+        var face = new THREE.Mesh(facegeometry, p_material);
+        face.castShadow = true;
+        face.position.set(-0.2, 0.4, 0.3);
+
+        var nosegeometry = new THREE.BoxGeometry(0.1, 0.2, 0.2);
+        var nose = new THREE.Mesh(nosegeometry, p_material);
+        nose.castShadow = true;
+        nose.position.set(-0.4, 0.3, 0.3);
+
+        var leggeometry = new THREE.BoxGeometry(0.1, 0.2, 0.1);
+        var leg_1 = new THREE.Mesh(leggeometry, p_material);
+        leg_1.castShadow = true;
+        leg_1.position.set(-0.1, 0, 0.4);
+
+        var leg_2 = new THREE.Mesh(leggeometry, p_material);
+        leg_2.castShadow = true;
+        leg_2.position.set(-0.1, 0, 0.2);
+
+        var leg_3 = new THREE.Mesh(leggeometry, p_material);
+        leg_3.castShadow = true;
+        leg_3.position.set(0.5, 0, 0.4);
+
+        var leg_4 = new THREE.Mesh(leggeometry, p_material);
+        leg_4.castShadow = true;
+        leg_4.position.set(0.5, 0, 0.2);
+
+        const Leg = new THREE.Group();
+        Leg.add(leg_1);
+        Leg.add(leg_2);
+        Leg.add(leg_3);
+        Leg.add(leg_4);
+
+        var Eyegeometry = new THREE.BoxGeometry(0.05, 0.05, 0.12);
+        var l_eye = new THREE.Mesh(Eyegeometry, floorMaterial);
+        l_eye.position.set(-0.4, 0.45, 0.4);
+
+        var r_eye = new THREE.Mesh(Eyegeometry, floorMaterial);
+        r_eye.position.set(-0.4, 0.45, 0.2);
+
+        var Pupilgeometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
+        var Pupilmaterial = new THREE.MeshStandardMaterial({color: 0x000000});
+        var l_pupil = new THREE.Mesh(Pupilgeometry, Pupilmaterial);
+        l_pupil.position.set(-0.42, 0.45, 0.45);
+
+        var r_pupil = new THREE.Mesh(Pupilgeometry, Pupilmaterial);
+        r_pupil.position.set(-0.42, 0.45, 0.15);
+
+        const allface = new THREE.Group();
+        allface.add(face);
+        allface.add(l_eye);
+        allface.add(r_eye);
+        allface.add(l_pupil);
+        allface.add(r_pupil);
+
+        const tower = new THREE.Group();
+        tower.add(body);
+        tower.add(floor);
+        tower.add(floor_2);
+        tower.add(roof);
+        tower.position.set(-0.7, 0.2, 2);
+        scene.add(tower); 
+
+        const pig = new THREE.Group();
+        pig.add(p_body);
+        pig.add(nose);
+        pig.add(Leg);
+        pig.add(allface);
+        pig.position.set(0.3, 0.1, 0.2);
+        scene.add(pig);
+       
+        update();
+
+        function update() {
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(update);
+
+          pig.rotation.y += 0.05;
+
+        }
+      }
+    </script>
+</body>
+</html>
