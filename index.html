@@ -5,7 +5,7 @@
     <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
   </head>
 <body>
-  <h1>陰・影の適応とオブジェクトのグループ化</h1>
+  <h1>陰・影の適応とオブジェクトのグループ化</h1><br>
  <script>
       window.addEventListener('DOMContentLoaded', init);
 
@@ -160,7 +160,9 @@
         }
       }
     </script>
-     塔と豚のオブジェクトを作成して、それぞれをnew THREE.GROUP()でグループ化した。<br>
-     また、オブジェクトにcastshadowで影をつけた。
+     説明：豚と塔はGroup()でグループ化されている。<br>
+     　　　また、plane(地面)はreciveshadow()で影を受け取り、豚と塔はcastshadowで影を作っている。<br>
+     　　　影を作っているライトはlightでこれはスポットライトである。
+</body>
 </body>
 </html>
